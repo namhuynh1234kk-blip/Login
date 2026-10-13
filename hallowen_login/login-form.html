@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#111022">
+<title>Moonlight — Sign in</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap');
+:root{--ink:#f8f4ff;--muted:#b8b2d0;--violet:#a78bfa;--pink:#f0a6ca;--glass:rgba(29,25,55,.64);--line:rgba(255,255,255,.15)}
+*{box-sizing:border-box}html{min-height:100%;background:#100f21}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:28px;color:var(--ink);font-family:'DM Sans',sans-serif;overflow-x:hidden;background:radial-gradient(ellipse at 15% 15%,#30224d 0,transparent 42%),radial-gradient(ellipse at 88% 82%,#302044 0,transparent 40%),linear-gradient(135deg,#111022,#17152e 58%,#21172e);position:relative}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.22;background-image:radial-gradient(2px 2px at 15% 25%,#fff 50%,transparent 100%),radial-gradient(1px 1px at 78% 16%,#fff 50%,transparent 100%),radial-gradient(2px 2px at 67% 71%,#fff 50%,transparent 100%),radial-gradient(1px 1px at 35% 83%,#fff 50%,transparent 100%),radial-gradient(1px 1px at 91% 45%,#fff 50%,transparent 100%);background-size:320px 280px}
+.ambient{position:fixed;border-radius:50%;filter:blur(2px);pointer-events:none;animation:float 9s ease-in-out infinite}.ambient.one{width:210px;height:210px;top:8%;left:7%;background:radial-gradient(circle,rgba(167,139,250,.2),transparent 70%)}.ambient.two{width:260px;height:260px;right:4%;bottom:4%;background:radial-gradient(circle,rgba(240,166,202,.14),transparent 70%);animation-delay:-4s}
+@keyframes float{50%{transform:translateY(-20px) translateX(12px)}}@keyframes bob{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-7px) rotate(2deg)}}@keyframes blink{0%,46%,50%,100%{transform:scaleY(1)}48%{transform:scaleY(.1)}}
+.shell{width:min(100%,980px);min-height:610px;display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:30px;overflow:hidden;background:rgba(20,18,40,.52);box-shadow:0 30px 100px rgba(0,0,0,.42),inset 0 1px rgba(255,255,255,.08);backdrop-filter:blur(24px);position:relative;z-index:1}
+.art{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:38px 30px;background:linear-gradient(155deg,rgba(167,139,250,.13),rgba(25,20,49,.14) 55%,rgba(240,166,202,.1));border-right:1px solid var(--line);isolation:isolate}
+.art:before{content:"";position:absolute;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,rgba(167,139,250,.2),rgba(167,139,250,0) 70%);top:15%;left:50%;transform:translateX(-50%);z-index:-1}
+.moon{position:absolute;right:15%;top:12%;width:62px;height:62px;border-radius:50%;background:#f7e9bd;box-shadow:0 0 32px rgba(247,233,189,.32),0 0 90px rgba(247,233,189,.14)}.moon:after{content:"";position:absolute;width:56px;height:56px;top:-7px;left:15px;border-radius:50%;background:#27203e}
+.star{position:absolute;color:#f9e9bc;font-size:19px;animation:twinkle 3s ease-in-out infinite}.s1{left:17%;top:20%}.s2{right:17%;top:33%;animation-delay:-1s}.s3{left:24%;bottom:30%;font-size:13px;animation-delay:-2s}.s4{right:22%;bottom:24%;font-size:12px}@keyframes twinkle{50%{opacity:.35;transform:scale(.8)}}
+.owl{width:174px;height:188px;position:relative;margin:20px 0 24px;animation:bob 5s ease-in-out infinite;filter:drop-shadow(0 20px 22px rgba(0,0,0,.25))}
+.owl-body{position:absolute;bottom:0;left:20px;width:134px;height:142px;border-radius:48% 48% 42% 42%;background:linear-gradient(145deg,#d7b6ff,#9271c9 62%,#685095);border:1px solid rgba(255,255,255,.4)}
+.ear{position:absolute;top:16px;width:45px;height:60px;background:#b99ae8;clip-path:polygon(0 100%,20% 0,100% 72%);z-index:2}.ear.left{left:24px;transform:rotate(-8deg)}.ear.right{right:24px;transform:scaleX(-1) rotate(-8deg)}
+.belly{position:absolute;bottom:6px;left:17px;width:100px;height:92px;border-radius:50% 50% 43% 43%;background:linear-gradient(135deg,#fff1dc,#e7d3ef)}
+.eye{position:absolute;top:42px;width:51px;height:53px;background:#fff8ee;border-radius:50%;display:grid;place-items:center;z-index:3}.eye.left{left:17px}.eye.right{right:17px}.pupil{width:20px;height:23px;background:#272039;border-radius:50%;position:relative;transition:transform .18s}.pupil:after{content:"";position:absolute;width:6px;height:6px;background:white;border-radius:50%;top:4px;left:5px}.owl.watching .pupil{transform:translateX(5px)}.beak{position:absolute;z-index:4;left:calc(50% - 10px);top:91px;width:20px;height:18px;background:#ffb56d;clip-path:polygon(0 0,100% 0,50% 100%)}.wing{position:absolute;z-index:4;top:83px;width:30px;height:60px;background:#a384d5;border-radius:50%;}.wing.left{left:10px;transform:rotate(22deg)}.wing.right{right:10px;transform:rotate(-22deg)}
+.art h2{font:700 29px 'Playfair Display',serif;text-align:center;margin:0 0 10px;letter-spacing:.2px}.art p{color:#c9c0df;line-height:1.7;text-align:center;font-size:13px;max-width:275px;margin:0}.art-foot{position:absolute;bottom:20px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#8f86ac}
+.form-side{padding:54px 48px;display:flex;flex-direction:column;justify-content:center}.brand{display:flex;align-items:center;gap:10px;margin-bottom:34px;color:#ddd3ff;font-size:12px;font-weight:700;letter-spacing:2.3px;text-transform:uppercase}.brand-mark{display:grid;place-items:center;width:32px;height:32px;border-radius:11px;background:linear-gradient(135deg,#b99aff,#edacd0);color:#241934;font-size:17px;box-shadow:0 5px 22px #a78bfa35}
+h1{font:700 clamp(30px,4vw,38px) 'Playfair Display',serif;letter-spacing:-.7px;margin:0 0 9px}.subtitle{color:var(--muted);font-size:13px;line-height:1.65;margin:0 0 29px}.field{margin-bottom:17px}.field label{display:block;color:#e3dcf3;font-size:12px;font-weight:600;margin:0 0 8px}.input-wrap{position:relative}.input-wrap input{width:100%;height:49px;border:1px solid rgba(255,255,255,.14);border-radius:13px;background:rgba(8,7,21,.3);outline:none;color:white;padding:0 44px 0 14px;font:13px 'DM Sans',sans-serif;transition:border .2s,box-shadow .2s,background .2s}.input-wrap input::placeholder{color:#77718f}.input-wrap input:focus{border-color:#b49af5;background:rgba(9,7,23,.48);box-shadow:0 0 0 3px rgba(167,139,250,.12)}.field-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#9b90bc;font-size:16px}.toggle-pass{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:0;background:transparent;color:#bcb1d8;cursor:pointer;padding:7px;font-size:15px}.options{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:2px 0 22px;font-size:11px;color:var(--muted)}.remember{display:flex;align-items:center;gap:7px;cursor:pointer}.remember input{accent-color:#ad91f8}.text-btn{border:0;padding:0;background:none;color:#d3bfff;font:600 11px 'DM Sans',sans-serif;cursor:pointer}.text-btn:hover{color:#fff}.primary{width:100%;height:49px;border:0;border-radius:13px;background:linear-gradient(105deg,#b59aff,#e3a6d0);color:#231a35;font:700 13px 'DM Sans',sans-serif;letter-spacing:.2px;cursor:pointer;box-shadow:0 10px 28px rgba(167,139,250,.2);transition:transform .2s,filter .2s,box-shadow .2s}.primary:hover{transform:translateY(-2px);filter:brightness(1.06);box-shadow:0 13px 32px rgba(167,139,250,.3)}.primary:active{transform:translateY(0)}.divider{display:flex;align-items:center;gap:12px;color:#77718f;font-size:10px;margin:23px 0}.divider:before,.divider:after{content:"";height:1px;flex:1;background:rgba(255,255,255,.1)}.switch{text-align:center;color:var(--muted);font-size:12px;margin:0}.switch button{font-size:12px}.message{min-height:18px;margin:13px 0 0;color:#f4c4da;font-size:11px;line-height:1.5}.message.success{color:#b6f1d2}.legal{color:#77718f;font-size:10px;text-align:center;line-height:1.6;margin-top:24px}.legal span{color:#bdb0d7}
+@media(max-width:760px){body{padding:16px}.shell{grid-template-columns:1fr;max-width:440px;min-height:unset;border-radius:25px}.art{min-height:220px;padding:25px 20px 20px;border-right:0;border-bottom:1px solid var(--line)}.moon{width:42px;height:42px;right:15%;top:12%}.moon:after{width:39px;height:39px;left:10px;top:-5px}.owl{transform:scale(.7);height:132px;margin:0 0 8px}.art h2{font-size:23px}.art p{font-size:11px}.art-foot{display:none}.form-side{padding:32px 27px 30px}.brand{margin-bottom:25px}.subtitle{margin-bottom:23px}.owl{transform-origin:bottom center}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<div class="ambient one"></div><div class="ambient two"></div>
+<main class="shell">
+<section class="art" aria-label="Minh họa Halloween">
+<div class="moon"></div><span class="star s1">✦</span><span class="star s2">✧</span><span class="star s3">✦</span><span class="star s4">✧</span>
+<div class="owl" id="owl" aria-hidden="true"><div class="ear left"></div><div class="ear right"></div><div class="owl-body"><div class="belly"></div><div class="eye left"><div class="pupil"></div></div><div class="eye right"><div class="pupil"></div></div><div class="beak"></div><div class="wing left"></div><div class="wing right"></div></div></div>
+<h2>A little moonlight magic</h2><p>Một góc nhỏ bình yên giữa đêm huyền bí. Đăng nhập và bước vào thế giới của riêng bạn.</p>
+<div class="art-foot">✦ Stay curious · Stay magical ✦</div>
+</section>
+<section class="form-side">
+<div class="brand"><span class="brand-mark">☾</span> MOONLIGHT</div>
+<h1 id="formTitle">Chào mừng trở lại</h1><p class="subtitle" id="formSubtitle">Nhập thông tin của bạn để tiếp tục hành trình đêm nay.</p>
+<form id="authForm" novalidate>
+<div class="field" id="nameField" hidden><label for="fullName">Tên hiển thị</label><div class="input-wrap"><input id="fullName" name="fullName" type="text" placeholder="Tên của bạn" autocomplete="name"><span class="field-icon">✧</span></div></div>
+<div class="field"><label for="email">Email</label><div class="input-wrap"><input id="email" name="email" type="email" placeholder="you@example.com" autocomplete="email" required><span class="field-icon">✉</span></div></div>
+<div class="field"><label for="password">Mật khẩu</label><div class="input-wrap"><input id="password" name="password" type="password" placeholder="Ít nhất 8 ký tự" autocomplete="current-password" required minlength="8"><button class="toggle-pass" id="togglePass" type="button" aria-label="Hiện mật khẩu" title="Hiện/ẩn mật khẩu">◉</button></div></div>
+<div class="options" id="loginOptions"><label class="remember"><input type="checkbox" id="remember"> Ghi nhớ đăng nhập</label><button class="text-btn" type="button" id="forgotBtn">Quên mật khẩu?</button></div>
+<button class="primary" id="submitBtn" type="submit">Đăng nhập <span aria-hidden="true">↗</span></button>
+</form>
+<div class="divider">ĐÊM NAY THẬT ĐẸP</div>
+<p class="switch"><span id="switchText">Chưa có tài khoản?</span> <button class="text-btn" type="button" id="switchBtn">Tạo tài khoản</button></p>
+<p class="message" id="message" role="status" aria-live="polite"></p>
+<p class="legal">Bằng việc tiếp tục, bạn đồng ý với <span>Điều khoản sử dụng</span> và <span>Chính sách riêng tư</span>.</p>
+</section>
+</main>
+<script>
+(() => {
+  'use strict';
+  const $ = (id) => document.getElementById(id);
+  const form = $('authForm'), email = $('email'), password = $('password');
+  const owl = $('owl'), message = $('message');
+  let isSignup = false;
+  $('togglePass').addEventListener('click', () => {
+    const show = password.type === 'password';
+    password.type = show ? 'text' : 'password';
+    $('togglePass').setAttribute('aria-label', show ? 'Ẩn mật khẩu' : 'Hiện mật khẩu');
+    password.focus();
+  });
+  $('switchBtn').addEventListener('click', () => {
+    isSignup = !isSignup;
+    $('nameField').hidden = !isSignup;
+    $('fullName').required = isSignup;
+    $('formTitle').textContent = isSignup ? 'Tạo tài khoản mới' : 'Chào mừng trở lại';
+    $('formSubtitle').textContent = isSignup ? 'Tạo một góc nhỏ của riêng bạn dưới ánh trăng.' : 'Nhập thông tin của bạn để tiếp tục hành trình đêm nay.';
+    $('submitBtn').innerHTML = isSignup ? 'Tạo tài khoản <span aria-hidden="true">↗</span>' : 'Đăng nhập <span aria-hidden="true">↗</span>';
+    $('switchText').textContent = isSignup ? 'Đã có tài khoản?' : 'Chưa có tài khoản?';
+    $('switchBtn').textContent = isSignup ? 'Đăng nhập' : 'Tạo tài khoản';
+    $('loginOptions').hidden = isSignup;
+    password.autocomplete = isSignup ? 'new-password' : 'current-password';
+    message.textContent = ''; message.className = 'message';
+  });
+  $('forgotBtn').addEventListener('click', () => {
+    message.className = 'message';
+    message.textContent = email.value.trim() ? 'Giao diện mẫu chưa kết nối gửi email đặt lại mật khẩu.' : 'Nhập email trước nhé, rồi bạn có thể đặt lại mật khẩu.';
+    if (!email.value.trim()) email.focus();
+  });
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    message.className = 'message';
+    if (isSignup && !$('fullName').value.trim()) { message.textContent = 'Bạn nhập tên hiển thị nhé.'; $('fullName').focus(); return; }
+    if (!email.validity.valid) { message.textContent = 'Vui lòng nhập địa chỉ email hợp lệ.'; email.focus(); return; }
+    if (password.value.length < 8) { message.textContent = 'Mật khẩu cần có ít nhất 8 ký tự.'; password.focus(); return; }
+    message.textContent = isSignup
+      ? 'Giao diện đã kiểm tra dữ liệu. Cần kết nối backend để tạo tài khoản thật.'
+      : 'Dữ liệu hợp lệ! Đây là bản giao diện demo, chưa kết nối hệ thống xác thực.';
+    message.classList.add('success');
+  });
+  document.addEventListener('pointermove', (event) => {
+    const rect = password.getBoundingClientRect();
+    if (event.clientX >= rect.left - 120 && event.clientX <= rect.right + 120 &&
+        event.clientY >= rect.top - 120 && event.clientY <= rect.bottom + 120) {
+      const x = (event.clientX - (rect.left + rect.width / 2)) / 24;
+      const y = (event.clientY - (rect.top + rect.height / 2)) / 24;
+      owl.style.setProperty('--look-x', x + 'px');
+      owl.style.setProperty('--look-y', y + 'px');
+      owl.classList.toggle('watching', password.matches(':focus'));
+    }
+  });
+  password.addEventListener('focus', () => owl.classList.add('watching'));
+  password.addEventListener('blur', () => owl.classList.remove('watching'));
+})();
+</script>
+</body>
+</html>
