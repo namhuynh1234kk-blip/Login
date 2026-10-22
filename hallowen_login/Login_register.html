@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="vi">
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Đăng nhập / Đăng ký | Quản lý công việc</title>
+    <link rel="stylesheet" href="style.css?v=10" />
+    <style>
+      /* Bổ sung form đăng ký, giữ nguyên giao diện Halloween gốc */
+      .register-only[hidden], #forgot-password[hidden] { display: none !important; }
+      .register-only { animation: registerFadeIn .24s ease both; }
+      .register-only .field { margin-top: 0; }
+      .register-terms {
+        display: flex;
+        align-items: flex-start;
+        gap: 9px;
+        margin: 4px 0 16px;
+        color: var(--muted, #777);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+      .register-terms input { margin-top: 3px; accent-color: var(--accent, #8c6bdb); flex: 0 0 auto; }
+      .register-terms a { color: inherit; text-underline-offset: 3px; }
+      .form-panel.register-mode .login-form { padding-top: 8px; padding-bottom: 8px; }
+      .form-panel.register-mode .signup-row { margin-top: 16px; }
+      #status { min-height: 1.35em; }
+      @keyframes registerFadeIn {
+        from { opacity: 0; transform: translateY(5px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .register-only { animation: none; }
+      }
+    </style>
+    <script src="resources.js?v=10" defer></script>
+    <script src="script.js?v=10" defer></script>
+    <script src="spider.js?v=10" defer></script>
+    <script src="wolf.js?v=10" defer></script>
+  </head>
+
+  <body>
+
+    <div class="landscape-scene page-landscape" aria-hidden="true">
+      <img class="scene-land scene-day" src="images/background-day.svg?v=clouds-1" alt="" />
+      <img class="scene-land scene-night" src="images/background-night.svg?v=clouds-1" alt="" />
+      <div class="sky-flight" aria-hidden="true">
+        <span class="sky-bat bat-1">
+          <span class="flyer-facing">
+            <span data-svg="images/bat.svg" aria-hidden="true"></span>
+          </span>
+        </span>
+        <span class="sky-bat bat-2">
+          <span class="flyer-facing">
+            <span data-svg="images/bat.svg" aria-hidden="true"></span>
+          </span>
+        </span>
+        <span class="sky-bat bat-3">
+          <span class="flyer-facing">
+            <span data-svg="images/bat.svg" aria-hidden="true"></span>
+          </span>
+        </span>
+        <span class="sky-bat bat-4">
+          <span class="flyer-facing">
+            <span data-svg="images/bat.svg" aria-hidden="true"></span>
+          </span>
+        </span>
+        <span class="sky-bat bat-5">
+          <span class="flyer-facing">
+            <span data-svg="images/bat.svg" aria-hidden="true"></span>
+          </span>
+        </span>
+        <span class="sky-bat bat-6">
+          <span class="flyer-facing">
+            <span data-svg="images/bat.svg" aria-hidden="true"></span>
+          </span>
+        </span>
+        <span class="sky-witch">
+          <span class="flyer-facing">
+            <img src="images/witch.svg?v=1" alt="" width="3600" height="3400" draggable="false">
+          </span>
+        </span>
+      </div>
+    </div>
+
+    <div class="login-shell">
+      <div class="halloween-vines" id="halloween-vines" aria-hidden="true"></div>
+      <main class="login-card" aria-labelledby="login-title">
+        <section class="scene-panel" aria-labelledby="welcome-title">
+          <div class="landscape-scene" aria-hidden="true">
+            <div class="scene-sky-objects">
+              <div class="scene-sun"></div>
+              <div class="scene-moon"></div>
+            </div>
+            <img class="scene-land scene-day" src="images/panel-day.svg?v=responsive-1" alt="" />
+            <img class="scene-land scene-night" src="images/panel-night.svg?v=responsive-1" alt="" />
+            <div class="sky-flight" aria-hidden="true">
+              <span class="sky-bat bat-1">
+                <span class="flyer-facing">
+                  <span data-svg="images/bat.svg" aria-hidden="true"></span>
+                </span>
+              </span>
+              <span class="sky-bat bat-2">
+                <span class="flyer-facing">
+                  <span data-svg="images/bat.svg" aria-hidden="true"></span>
+                </span>
+              </span>
+              <span class="sky-bat bat-3">
+                <span class="flyer-facing">
+                  <span data-svg="images/bat.svg" aria-hidden="true"></span>
+                </span>
+              </span>
+            </div>
+          </div>
+          <div class="summit-stage" aria-hidden="true"></div>
+          <button class="theme-toggle" id="theme-toggle" type="button" aria-pressed="false" aria-label="Bật đêm Halloween">
+            <span class="theme-toggle-thumb" aria-hidden="true"></span>
+            <span data-svg="images/icon-sun.svg" aria-hidden="true"></span>
+            <span data-svg="images/icon-moon.svg" aria-hidden="true"></span>
+          </button>
+          <div class="scene-copy">
+            <h2 id="welcome-title">Không gian của bạn</h2>
+            <p>Đăng nhập để quản lý công việc, theo dõi tiến độ dự án và cộng tác cùng nhóm.</p>
+          </div>
+        </section>
+        <section class="form-panel">
+          <form class="login-form" id="login-form">
+            <h1 id="login-title">Đăng nhập</h1>
+
+            <div class="field register-only" id="register-name-field" hidden>
+              <label class="sr-only" for="full-name">Họ và tên</label>
+              <input id="full-name" name="fullName" type="text" placeholder="Họ và tên" autocomplete="name" disabled />
+            </div>
+
+            <div class="field">
+              <label class="sr-only" for="email">Email</label>
+              <input id="email" name="email" type="email" placeholder="Email" autocomplete="username" required />
+              <div class="email-owl" id="email-owl" aria-hidden="true">
+                <span data-svg="images/owl.svg" aria-hidden="true"></span>
+              </div>
+            </div>
+
+            <div class="field password">
+              <label class="sr-only" for="password">Mật khẩu</label>
+              <input id="password" name="password" type="password" placeholder="Mật khẩu" autocomplete="current-password" minlength="8" required />
+              <button class="eye" id="show-password" type="button" aria-label="Hiện mật khẩu" aria-pressed="false" aria-controls="password">
+                <img src="images/icon-eye.svg" alt="" width="18" height="18" />
+              </button>
+            </div>
+
+            <div class="field register-only" id="confirm-password-field" hidden>
+              <label class="sr-only" for="confirm-password">Xác nhận mật khẩu</label>
+              <input id="confirm-password" name="confirmPassword" type="password" placeholder="Nhập lại mật khẩu" autocomplete="new-password" minlength="8" disabled />
+            </div>
+
+            <label class="register-terms register-only" id="register-terms" hidden>
+              <input id="agree-terms" type="checkbox" disabled />
+              <span>Tôi đồng ý với các điều khoản sử dụng và chính sách riêng tư.</span>
+            </label>
+
+            <button class="text-action forgot" id="forgot-password" type="button">Quên mật khẩu?</button>
+            <button class="submit" id="submit-button" type="submit">
+              <span id="submit-label">Đăng nhập</span> <img src="images/icon-arrow.svg" alt="" width="17" height="17" />
+            </button>
+            <p class="signup-row">
+              <span id="signup-prompt">Bạn chưa có tài khoản?</span> <button class="text-action" id="signup" type="button">Đăng ký</button>
+            </p>
+            <p class="status" id="status" role="status" aria-live="polite"></p>
+          </form>
+        </section>
+      </main>
+    </div>
+
+    <canvas id="halloween-spider" aria-hidden="true"></canvas>
+
+    <div class="flash-beam" id="flash-beam" aria-hidden="true"></div>
+
+    <div class="password-reveal" id="password-reveal" aria-hidden="true">
+      <span id="reveal-text"></span>
+    </div>
+
+    <div class="flashlight" id="flashlight" aria-hidden="true">
+      <img src="images/flashlight.svg" alt="" width="33" height="33" />
+    </div>
+    
+
+    <script>
+      // Chuyển đổi đăng nhập/đăng ký ngay trên cùng form.
+      // Dùng capture + stopImmediatePropagation để không bị handler demo cũ
+      // trong script.js ghi đè trạng thái của form mới.
+      (() => {
+        const form = document.getElementById('login-form');
+        const panel = document.querySelector('.form-panel');
+        const title = document.getElementById('login-title');
+        const submitLabel = document.getElementById('submit-label');
+        const signupButton = document.getElementById('signup');
+        const signupPrompt = document.getElementById('signup-prompt');
+        const forgotButton = document.getElementById('forgot-password');
+        const status = document.getElementById('status');
+        const nameField = document.getElementById('register-name-field');
+        const confirmField = document.getElementById('confirm-password-field');
+        const termsField = document.getElementById('register-terms');
+        const fullName = document.getElementById('full-name');
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirm-password');
+        const agreeTerms = document.getElementById('agree-terms');
+        let registerMode = false;
+
+        function setStatus(text, success = false) {
+          status.textContent = text;
+          status.classList.toggle('success', success);
+          status.setAttribute('role', 'status');
+        }
+
+        function setRegisterMode(enabled) {
+          registerMode = enabled;
+          panel.classList.toggle('register-mode', enabled);
+          nameField.hidden = !enabled;
+          confirmField.hidden = !enabled;
+          termsField.hidden = !enabled;
+          fullName.disabled = !enabled;
+          fullName.required = enabled;
+          confirmPassword.disabled = !enabled;
+          confirmPassword.required = enabled;
+          agreeTerms.disabled = !enabled;
+          agreeTerms.required = enabled;
+          forgotButton.hidden = enabled;
+
+          title.textContent = enabled ? 'Tạo tài khoản' : 'Đăng nhập';
+          submitLabel.textContent = enabled ? 'Đăng ký tài khoản' : 'Đăng nhập';
+          signupPrompt.textContent = enabled ? 'Bạn đã có tài khoản?' : 'Bạn chưa có tài khoản?';
+          signupButton.textContent = enabled ? 'Đăng nhập' : 'Đăng ký';
+          email.autocomplete = enabled ? 'email' : 'username';
+          password.autocomplete = enabled ? 'new-password' : 'current-password';
+          password.placeholder = enabled ? 'Mật khẩu (ít nhất 8 ký tự)' : 'Mật khẩu';
+          confirmPassword.value = '';
+          agreeTerms.checked = false;
+          setStatus('');
+        }
+
+        signupButton.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          setRegisterMode(!registerMode);
+        }, true);
+
+        form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          setStatus('');
+
+          if (!email.validity.valid) {
+            setStatus('Bạn kiểm tra lại địa chỉ email nhé.');
+            email.focus();
+            return;
+          }
+          if (password.value.length < 8) {
+            setStatus('Mật khẩu cần có ít nhất 8 ký tự.');
+            password.focus();
+            return;
+          }
+
+          if (registerMode) {
+            if (!fullName.value.trim()) {
+              setStatus('Bạn nhập họ và tên nhé.');
+              fullName.focus();
+              return;
+            }
+            if (password.value !== confirmPassword.value) {
+              setStatus('Hai mật khẩu chưa trùng khớp.');
+              confirmPassword.focus();
+              return;
+            }
+            if (!agreeTerms.checked) {
+              setStatus('Bạn cần đồng ý với điều khoản để tiếp tục.');
+              agreeTerms.focus();
+              return;
+            }
+            setStatus('Thông tin hợp lệ! Form đăng ký hiện chưa kết nối máy chủ để tạo tài khoản thật.', true);
+          } else {
+            setStatus('Thông tin hợp lệ! Form đăng nhập hiện chưa kết nối máy chủ để xác thực tài khoản.', true);
+          }
+        }, true);
+
+        forgotButton.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          setStatus(email.value.trim()
+            ? 'Chức năng đặt lại mật khẩu cần được kết nối với máy chủ.'
+            : 'Bạn nhập email trước nhé để có thể đặt lại mật khẩu.');
+          if (!email.value.trim()) email.focus();
+        }, true);
+      })();
+    </script>
+
+
+    <script>
+      // Bổ sung vùng phản chiếu ánh đèn pin cho ô "Nhập lại mật khẩu".
+      // Giữ nguyên hiệu ứng đèn pin gốc dành cho ô mật khẩu đầu tiên.
+      (() => {
+        const confirmInput = document.getElementById('confirm-password');
+        const confirmField = document.getElementById('confirm-password-field');
+        const toggleButton = document.getElementById('show-password');
+        const beam = document.getElementById('flash-beam');
+        if (!confirmInput || !confirmField || !toggleButton || !beam) return;
+
+        const overlay = document.createElement('div');
+        overlay.className = 'password-reveal confirm-password-reveal';
+        overlay.setAttribute('aria-hidden', 'true');
+        const chars = document.createElement('span');
+        overlay.appendChild(chars);
+        document.body.appendChild(overlay);
+
+        let pointer = { x: 0, y: 0 };
+        const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+        function renderConfirmPassword() {
+          chars.replaceChildren(...Array.from(confirmInput.value, letter => {
+            const character = document.createElement('span');
+            character.className = 'reveal-char';
+            const masked = document.createElement('span');
+            masked.className = 'masked-char';
+            masked.textContent = '•';
+            const plain = document.createElement('span');
+            plain.className = 'plain-char';
+            plain.textContent = letter;
+            character.append(masked, plain);
+            return character;
+          }));
+        }
+
+        function updateConfirmFlashlight() {
+          const active = document.body.classList.contains('night') &&
+            toggleButton.getAttribute('aria-pressed') === 'true' && !confirmField.hidden;
+          if (!active) {
+            overlay.style.display = 'none';
+            return;
+          }
+          overlay.style.display = '';
+          const eye = toggleButton.getBoundingClientRect();
+          const field = confirmInput.getBoundingClientRect();
+          const eyeX = eye.left + eye.width / 2;
+          const eyeY = eye.top + eye.height / 2;
+          const dx = pointer.x - eyeX;
+          const dy = pointer.y - eyeY;
+          const angle = Math.atan2(dy, dx);
+          const ux = Math.cos(angle), uy = Math.sin(angle);
+          const originX = eyeX + ux * 13, originY = eyeY + uy * 13;
+          const distance = Math.hypot(dx, dy);
+          const length = clamp(distance * 1.65, 160, 1600);
+          const height = length * .38;
+
+          overlay.style.left = `${field.left}px`;
+          overlay.style.top = `${field.top}px`;
+          overlay.style.width = `${Math.max(0, field.width - 45)}px`;
+          overlay.style.height = `${field.height}px`;
+          chars.style.transform = `translateX(${-confirmInput.scrollLeft}px)`;
+
+          const lightAt = (x, y) => {
+            const ox = x - originX, oy = y - originY;
+            const along = ox * ux + oy * uy;
+            const sideways = Math.abs(-ox * uy + oy * ux);
+            const half = height * (.01 + .49 * Math.max(0, along) / length);
+            const edge = clamp((half - sideways + 4) / 16, 0, 1);
+            const tail = clamp((along / length - .55) / .41, 0, 1);
+            const fade = 1 - tail * tail * (3 - 2 * tail);
+            return along >= 0 ? edge * fade : 0;
+          };
+          for (const character of chars.children) {
+            const rect = character.getBoundingClientRect();
+            character.style.setProperty('--lit', String(lightAt(rect.left + rect.width / 2, field.top + field.height / 2)));
+          }
+        }
+
+        document.addEventListener('pointermove', event => {
+          pointer = { x: event.clientX, y: event.clientY };
+          updateConfirmFlashlight();
+        });
+        confirmInput.addEventListener('input', () => {
+          renderConfirmPassword();
+          updateConfirmFlashlight();
+        });
+        confirmInput.addEventListener('scroll', updateConfirmFlashlight);
+        toggleButton.addEventListener('click', () => requestAnimationFrame(updateConfirmFlashlight));
+        document.getElementById('theme-toggle')?.addEventListener('click', () => requestAnimationFrame(updateConfirmFlashlight));
+        window.addEventListener('resize', updateConfirmFlashlight);
+        window.addEventListener('scroll', updateConfirmFlashlight, true);
+
+        // Cập nhật khi chuyển giữa đăng nhập và đăng ký.
+        const observer = new MutationObserver(() => {
+          renderConfirmPassword();
+          updateConfirmFlashlight();
+        });
+        observer.observe(confirmField, { attributes: true, attributeFilter: ['hidden'] });
+        renderConfirmPassword();
+        window.addEventListener('load', updateConfirmFlashlight);
+      })();
+    </script>
+
+  </body>
+
+</html>
